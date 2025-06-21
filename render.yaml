@@ -2,7 +2,7 @@ services:
   - type: worker
     name: telegram-bot
     runtime: python
-    repo: https://github.com/<TUO_USERNAME>/<TUO_REPO>
+    repo: https://github.com/d-romeo/telegram-python
     plan: free
     branch: main
     buildCommand: pip install -r requirements.txt
