@@ -1,8 +1,13 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import os
+import sys
 
-TOKEN = os.getenv("7823431777:AAFhtSJMTHcnp4GjORSN2ierXfdNarWoU-4")
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+
+if not TOKEN:
+    print("Errore: la variabile TELEGRAM_TOKEN non è impostata.", file=sys.stderr)
+    sys.exit(1)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Ciao! Sono un bot Telegram su Render!")
