@@ -37,8 +37,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
         [InlineKeyboardButton("📅 Prenota", url="https://calendar.app.google/JAeEMzsJX5yjQQ5N6")],
-        [InlineKeyboardButton("💻 GitHub", url="https://github.com/TUO_USERNAME")],
-        [InlineKeyboardButton("📬 Contattami", url="https://t.me/TUO_USERNAME")]
+        [InlineKeyboardButton("💻 GitHub", url="https://github.com/d-romeo")],
+        [InlineKeyboardButton("📬 Contattami", url="https://t.me/@dromeo_1")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
