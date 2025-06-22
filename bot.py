@@ -1,24 +1,39 @@
 import os
+import json
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-# Prendi il token da variabili ambiente
-TOKEN = os.environ.get("TELEGRAM_TOKEN")
+# === Percorso file per salvare utenti ===
+USER_FILE = "utenti.json"
 
-# Dizionario per salvare gli utenti che usano il bot
-user_data = {}
+# === Carica utenti da file ===
+def load_users():
+    if os.path.exists(USER_FILE):
+        with open(USER_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+# === Salva utenti su file ===
+def save_users():
+    with open(USER_FILE, "w", encoding="utf-8") as f:
+        json.dump(user_data, f, indent=2, ensure_ascii=False)
+
+# === Inizializza ===
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+user_data = load_users()
 
 # === /start ===
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    chat_id = update.effective_chat.id
+    chat_id = str(update.effective_chat.id)  # chiave stringa per JSON
 
-    # Salva utente
+    # Salva l'utente
     user_data[chat_id] = {
         "first_name": user.first_name,
         "username": user.username,
         "id": user.id,
     }
+    save_users()
 
     keyboard = [
         [InlineKeyboardButton("📅 Prenota", url="https://calendar.app.google/JAeEMzsJX5yjQQ5N6")],
@@ -36,11 +51,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# === /link (comando extra diretto) ===
+# === /link ===
 async def link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("📅 Prenota qui: https://calendar.app.google/JAeEMzsJX5yjQQ5N6")
 
-# === /utenti (debug: mostra utenti registrati) ===
+# === /utenti ===
 async def utenti(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not user_data:
         await update.message.reply_text("Nessun utente ha ancora usato il bot.")
@@ -51,13 +66,10 @@ async def utenti(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg += f"• {u['first_name']} (@{u['username']})\n"
     await update.message.reply_text(msg)
 
-# === Build app ===
+# === App ===
 app = ApplicationBuilder().token(TOKEN).build()
-
-# === Handler comandi ===
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("link", link))
 app.add_handler(CommandHandler("utenti", utenti))
 
-# === Avvia il bot ===
 app.run_polling()
