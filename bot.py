@@ -4,7 +4,8 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # === Percorso file per salvare utenti ===
-USER_FILE = "utenti.json"
+USER_FILE = os.path.join(os.path.dirname(__file__), "utenti.json")
+
 
 # === Carica utenti da file ===
 def load_users():
