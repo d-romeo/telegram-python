@@ -37,7 +37,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     save_users()
 
     keyboard = [
-        [InlineKeyboardButton("📅 Prenota", url="https://calendar.app.google/JAeEMzsJX5yjQQ5N6")],
+        [InlineKeyboardButton("📅 Prenota", url="https://calendar.app.google/")],
         [InlineKeyboardButton("💻 GitHub", url="https://github.com/d-romeo")],
         [InlineKeyboardButton("📬 Contattami", url="https://t.me/@dromeo_1")]
     ]
